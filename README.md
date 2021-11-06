@@ -8,7 +8,7 @@ postgres
 redis
 jwt authorization
 smtp
-
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 appni ishga tushirishdan oldin _setup folderdagi model.sql va triggers.sql fayllarini database'da execute qilib olish kerak. trigger funksiyalar dastur to'gri ishlashi uchun kerak.
 
