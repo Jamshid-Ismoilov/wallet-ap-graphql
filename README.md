@@ -2,12 +2,12 @@
 this is a backend of wallet app for personal spending and income management.
 
 technologies used:
-golang
-graphql
-postgres
-redis
-jwt authorization
-smtp
+golang,
+graphql,
+postgres,
+redis,
+jwt authorization,
+smtp,
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 appni ishga tushirishdan oldin _setup folderdagi model.sql va triggers.sql fayllarini database'da execute qilib olish kerak. trigger funksiyalar dastur to'gri ishlashi uchun kerak.
