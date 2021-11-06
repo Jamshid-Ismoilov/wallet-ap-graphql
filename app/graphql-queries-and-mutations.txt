@@ -1,0 +1,446 @@
+Mutations 
+  registration
+  changePassword
+  checkRegistration
+  checkChangePassword
+  login
+  logout
+  addIncomingone
+  addOutgoingone
+  setBalance
+
+Queries
+  DailySpendings
+  MonthlySpendings
+  SpendingsByCategorydy
+  DailyIncomes
+  MonthlyIncomes
+  IncomesByCategorydy
+  GetBalance
+
+
+Detailed: 
+
+Mutations
+------------------------------------------------------------------------------------------------------------
+
+signup REGISTRATION mutation.
+server will send 6 digit code to the email that has been entered
+
+QUERY:
+
+mutation {
+  registration (input: {email: "example@gmail.com"}) {
+    content
+  }
+}
+
+RESULT:
+
+{
+  "data": {
+    "registration": {
+      "content": "Password has been send to your email"
+    }
+  }
+}
+
+----------------------------------------------------------------------------------------------------------
+in CHECKREGISTRATION mutation, user should enter extra details and password that sent to email to 
+verify signup action. after successfully checking registration, user details
+will be added to database and sends jwt token for authorization.
+
+QUERY:
+
+mutation {
+  checkRegistration(input: {firstname: "Example", lastname: "Example", email: "Example@gmail.com", password: "111111"}) {
+    content
+  }
+}
+
+RESULT:
+{
+  "data": {
+    "checkRegistration": {
+      "content": "jwt token"
+    }
+  }
+}
+
+----------------------------------------------------------------------------------------------------------
+user can use LOGIN mutation to log in to website when user loses jwt token or 
+while logging in from another device.
+server checks the information, if information is true, sends jwt token for authorization.
+
+QUERY:
+
+mutation {
+  login(input: {firstname: "Example", lastname: "Example", email: "example@gmail.com", password: "111111"}) {
+    content
+  }
+}
+
+RESULT: 
+{
+  "data": {
+    "login": {
+      "content": "jwt token"
+    }
+  }
+}
+---------------------------------------------------------------------------------------------------------
+user can use LOGOUT mutation to log out from server. user information will be deleted but
+user history will be saved in database for statistics.
+
+QUERY:
+mutation {
+  logout(input: {firstname: "Example", lastname: "Example", email: "example@gmail.com", password: "331858"}) {
+    content
+  }
+}
+
+RESULT:
+{
+  "data": {
+    "logout": {
+      "content": true
+    }
+  }
+}
+
+-----------------------------------------------------------------------------------------------------------
+
+user can change password in CHANGEPASSWORD mutation. first user should send email. server checks the mail
+if it exists in database, server sends new password to email.
+
+QUERY:
+
+mutation{
+  changePassword (input: {email: "example@gmail.com"}) {
+    content
+  }
+}
+
+RESULT:
+
+{
+  "data": {
+    "changePassword": {
+      "content": "Password has been send to your email"
+    }
+  }
+}
+
+------------------------------------------------------------------------------------------------------------
+after change password request, user should verify request by entering password sent to email and other details.
+user cannot change email, if email is not valid, server won't change details.
+after successfully changing password, server sends old jwt for authorization.
+
+QUERY:
+mutation {
+  checkChangePassword(input: {firstname: "Example", lastname: "Example", email: "example@gmail.com", password: "299102"}) {
+    content
+  }
+}
+
+RESULT
+{
+  "data": {
+    "checkChangePassword": {
+      "content": "jwt token"
+    }
+  }
+}
+
+------------------------------------------------------------------------------------------------------------------
+
+user can add income report at ADDINCOMING mutation. trigger function in database updates
+user balance automatically.
+entering comment and created time are optional, but frontend should send zero value if user doesnt enter.
+
+QUERY:
+
+mutation {
+  addIncoming(input: {token: "jwt token", amount: 100000.00, categoryId: 3, comment: "Comment is optional", createdAt: ""}) {
+    content
+  }
+}
+RESULT:
+
+{
+  "data": {
+    "addIncoming": {
+      "content": true
+    }
+  }
+}
+
+---------------------------------------------------------------------------------------------------------------
+user can add outgoing report at ADDOUTGOING mutation.  trigger function in database updates
+user balance automatically.
+entering comment and created time are optional, but frontend should send zero value if user doesnt enter.
+
+
+QUERY: 
+
+mutation {
+  addOutgoing(input: {token: "jwt token", amount: 100000.00, categoryId: 3, comment: "Comment is optional", createdAt: ""}) {
+    content
+  }
+}
+
+RESULT: 
+
+{
+  "data": {
+    "addOutgoing": {
+      "content": true
+    }
+  }
+}
+
+------------------------------------------------------------------------------------------------------------------
+
+user can get daily income report at DAILYINCOMES mutation.
+server sends income reports of one day user has chosen.
+
+QUERY:
+
+query {
+  DailyIncomes (input: {token: "jwt token", day: 7, month: 11, year: 2021}){
+    comment
+    categoryName
+    amount
+  }
+}
+
+RESULT:
+
+{
+  "data": {
+    "DailyIncomes": [
+      {
+        "comment": "Comment is optional",
+        "categoryName": "wages",
+        "amount": 100000
+      },
+      {
+        "comment": "Second income",
+        "categoryName": "wages",
+        "amount": 100000
+      }
+    ]
+  }
+}
+
+----------------------------------------------------------------------------------------------------------------
+
+user can get daily outgoing report at DAILYSPENDINGS mutation.
+server sends income reports of one day user has chosen.
+
+QUERY: 
+
+query {
+  DailySpendings (input: {token: "jwt token", day: 7, month: 11, year: 2021}){
+    comment
+    categoryName
+    amount
+  }
+}
+
+RESULT: 
+{
+  "data": {
+    "DailySpendings": [
+      {
+        "comment": "Comment is optional",
+        "categoryName": "wages",
+        "amount": 100000
+      },
+      {
+        "comment": "outgoing comment",
+        "categoryName": "wages",
+        "amount": 100000
+      },
+      {
+        "comment": null,
+        "categoryName": "wages",
+        "amount": 100000
+      }
+    ]
+  }
+}
+
+-------------------------------------------------------------------------------------------------------------
+
+SETBALANCE mutation, to set users balance
+
+QUERY:
+
+mutation {
+  setBalance(input: {token: "jwt token", amount: 156000}){
+    content
+  }
+}
+
+RESULT:
+
+{
+  "data": {
+    "setBalance": {
+      "content": true
+    }
+  }
+}
+
+-----------------------------------------------------------------------------------------------------------------
+
+
+  MonthlySpendings(input: MonthlyRequestBody): [StatisticsBody!]!
+      query returns outgoing statistics for month
+
+  QUERY:
+
+  query {
+  MonthlyIncomes (input: {token: "jwt token", month: 11, year: 2021}){
+    comment
+    categoryName
+    amount
+  }
+}
+
+RESULT: 
+
+{
+  "data": {
+    "MonthlySpendings": [
+      {
+        "comment": "Comment is optional",
+        "categoryName": "wages",
+        "amount": 100000
+      },
+      {
+        "comment": "outgoing comment",
+        "categoryName": "wages",
+        "amount": 100000
+      },
+      {
+        "comment": null,
+        "categoryName": "wages",
+        "amount": 100000
+      }
+    ]
+  }
+}
+-----------------------------------------------------------------------------------------------------------------
+
+  SpendingsByCategory(input: ByCategoryRequestBody): [StatisticsBody!]!
+      query returns outgoing statistics by category
+
+QUERY:
+query {
+  SpendingsByCategory(input: {token: "jwt token", id: 3}) {
+  amount
+  comment
+  }
+}
+RESULT:
+
+{
+  "data": {
+    "SpendingsByCategory": [
+      {
+        "amount": 100000,
+        "comment": "Comment is optional"
+      },
+      {
+        "amount": 100000,
+        "comment": "outgoing comment"
+      },
+      {
+        "amount": 100000,
+        "comment": null
+      }
+    ]
+  }
+}
+ ---------------------------------------------------------------------------------------------------------------
+
+  MonthlyIncomes(input: MonthlyRequestBody): [StatisticsBody!]!
+      query returns income statistics for month
+ 
+ QUERY: 
+
+ query {
+  MonthlyIncomes (input: {token: "jwt token", month: 11, year: 2021}){
+    comment
+    categoryName
+    amount
+  }
+}
+
+RESULT:
+
+{
+  "data": {
+    "MonthlyIncomes": [
+      {
+        "comment": "Comment is optional",
+        "categoryName": "wages",
+        "amount": 100000
+      },
+      {
+        "comment": "Second income",
+        "categoryName": "wages",
+        "amount": 100000
+      },
+      {
+        "comment": null,
+        "categoryName": "wages",
+        "amount": 100000
+      },
+      {
+        "comment": null,
+        "categoryName": "wages",
+        "amount": 100000
+      }
+    ]
+  }
+}
+
+----------------------------------------------------------------------------------------------------------------
+  IncomesByCategory(input: ByCategoryRequestBody): [StatisticsBody!]!
+      query returns income statistics by category
+ 
+ QUERY:
+ query {
+  IncomesByCategory(input: {token: "jwt token", id: 3}) {
+  amount
+  comment
+  }
+}
+RESULT:
+{
+  "data": {
+    "IncomesByCategory": [
+      {
+        "amount": 1jwt token}
+----------------------------------------------------------------------------------------------------------------
+  GetBalance(input: RequestBody): BalanceBody!
+      query returns balance of user
+
+  QUERY:
+  query {
+  GetBalance(input: {token:  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6OCwiRW1haWwiOiJqYW1zaGlkeXVzdWZpc21vaWxAZ21haWwuY29tIn0.qYBr6Usg6eX9ATs6qnoPWjv4vhRGoneKkoRbMkAcSNI"}) {
+    balance
+  }
+}
+RESULT:
+
+{
+  "data": {
+    "GetBalance": {
+      "balance": 156000
+    }
+  }
+}

@@ -1,0 +1,96 @@
+type StatisticsBody {
+  amount: Float!
+  time: String!
+  categoryName: String!
+  comment: String
+}
+
+type Token {
+  content: String!
+}
+
+type Status {
+  content: String!
+}
+
+type JWTUser {
+  id: Int!
+  email: String!
+}
+
+type IsDone {
+  content: Boolean!
+}
+
+type BalanceBody {
+  balance: Float!
+}
+input RequestBody {
+  token: String!
+}
+
+input DailyRequestBody {
+  token: String!
+  day: Int!
+  month: Int!
+  year: Int!
+}
+
+input MonthlyRequestBody {
+  token: String!
+  month: Int!
+  year: Int!
+}
+
+input ByCategoryRequestBody {
+  token: String!
+  id: Int!
+}
+
+
+type Query {
+  DailySpendings(input: DailyRequestBody): [StatisticsBody!]!
+  MonthlySpendings(input: MonthlyRequestBody): [StatisticsBody!]!
+  SpendingsByCategory(input: ByCategoryRequestBody): [StatisticsBody!]!
+  DailyIncomes(input: DailyRequestBody): [StatisticsBody!]!
+  MonthlyIncomes(input: MonthlyRequestBody): [StatisticsBody!]!
+  IncomesByCategory(input: ByCategoryRequestBody): [StatisticsBody!]!
+  GetBalance(input: RequestBody): BalanceBody!
+}
+
+
+input NewUser {
+  email: String!
+}
+
+input User {
+  firstname: String!
+  lastname: String!
+  email: String!
+  password: String!
+}
+
+input Payment {
+  token: String!
+  comment: String!
+  amount: Float!
+  createdAt: String!
+  categoryId: Int!
+}
+
+input SetBalanceBody {
+  token: String!
+  amount: Float!
+}
+
+type Mutation {
+  registration(input: NewUser!): Status!
+  changePassword(input: NewUser!): Status!
+  checkRegistration(input: User!): Token!
+  checkChangePassword(input: User!): Token!
+  login(input: User!): Token!
+  logout(input: User!): IsDone!
+  addIncoming(input: Payment!): IsDone!
+  addOutgoing(input: Payment!): IsDone!
+  setBalance(input: SetBalanceBody!): IsDone!
+}
