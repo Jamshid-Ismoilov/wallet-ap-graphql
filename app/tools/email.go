@@ -13,8 +13,6 @@ func SendMail(email string) string {
 
 	Receivers = append(Receivers, email)
 
-	fmt.Println(Receivers)
-
 	auth := smtp.PlainAuth("", GSender, GPassword, GHost)
 
 	password := RandomGenerator()
