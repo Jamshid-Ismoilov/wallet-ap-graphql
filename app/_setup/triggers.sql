@@ -47,3 +47,6 @@ create or replace function outgoings_func () returns trigger language plpgsql as
 create trigger outgoing_trigger
 after insert on outgoings
 for each row execute procedure outgoings_func();
+
+
+-------------------------------------------------------------------------------------
