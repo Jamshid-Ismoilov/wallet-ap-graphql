@@ -8,7 +8,7 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
-var jwtKey = []byte("secret_key_for_task1")
+var jwtKey = []byte("secret_key")
 
 type Payload struct {
 	ID    int
